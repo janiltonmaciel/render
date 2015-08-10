@@ -5,6 +5,8 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
+
+	"gitlab.globoi.com/bastian/falkor/errors"
 )
 
 const (
@@ -38,6 +40,30 @@ const (
 	ContentType    = "Content-Type"
 )
 
+func WriteJSON(w http.ResponseWriter, code int, v interface{}) error {
+	result, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	w.Header().Set(ContentType, ApplicationJSONCharsetUTF8)
+	w.WriteHeader(code)
+	w.Write(result)
+
+	return nil
+}
+
+func WriteError(w http.ResponseWriter, err error) error {
+	code := http.StatusInternalServerError
+	message := http.StatusText(code)
+
+	if err, ok := err.(*errors.HTTP); ok {
+		return WriteJSON(w, err.Code, err)
+	}
+
+	return WriteJSON(w, code, errors.NewHttpError(code, message))
+}
+
 func WriteHTML(w http.ResponseWriter, code int, html string) error {
 	return WriteHTMLf(w, code, "%s", html)
 }
@@ -58,19 +84,6 @@ func WriteStringf(w http.ResponseWriter, code int, format string, a ...interface
 	w.WriteHeader(code)
 	_, err = fmt.Fprintf(w, format, a...)
 	return err
-}
-
-func WriteJSON(w http.ResponseWriter, code int, v interface{}) error {
-	result, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	w.Header().Set(ContentType, ApplicationJSONCharsetUTF8)
-	w.WriteHeader(code)
-	w.Write(result)
-
-	return nil
 }
 
 func WriteJSONP(w http.ResponseWriter, code int, callback string, v interface{}) (err error) {
