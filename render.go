@@ -39,3 +39,8 @@ func getStatusCode(code ...int) int {
 	}
 	return http.StatusOK
 }
+
+func WriteNoContent(w http.ResponseWriter) error {
+	w.WriteHeader(http.StatusNoContent)
+	return nil
+}
