@@ -31,6 +31,7 @@ const (
 	AcceptEncoding = "Accept-Encoding"
 	Authorization  = "Authorization"
 	ContentType    = "Content-Type"
+	CacheControl   = "Cache-Control"
 )
 
 func getStatusCode(code ...int) int {

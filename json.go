@@ -19,9 +19,9 @@ func WriteJSON(w http.ResponseWriter, v interface{}, code ...int) error {
 	return nil
 }
 
-func WriteJSONString(w http.ResponseWriter, v string, code ...int) (err error) {
-	w.Header().Set(ContentType, ApplicationJSONCharsetUTF8)
-	w.WriteHeader(getStatusCode(code...))
+func WriteJSONString(w http.ResponseWriter, v string, code int, maxAge ...int) (err error) {
+	head := newHead(ApplicationJSONCharsetUTF8, code, maxAge...)
+	head.Write(w)
 	_, err = fmt.Fprintf(w, "%s", v)
 	return err
 }
