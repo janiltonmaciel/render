@@ -34,6 +34,11 @@ const (
 	CacheControl   = "Cache-Control"
 )
 
+func WriteNoContent(w http.ResponseWriter) error {
+	w.WriteHeader(http.StatusNoContent)
+	return nil
+}
+
 func getStatusCode(code ...int) int {
 	if len(code) > 0 {
 		return code[0]
@@ -41,7 +46,9 @@ func getStatusCode(code ...int) int {
 	return http.StatusOK
 }
 
-func WriteNoContent(w http.ResponseWriter) error {
-	w.WriteHeader(http.StatusNoContent)
-	return nil
+func getMaxAge(maxAge ...int) int {
+	if len(maxAge) > 0 {
+		return maxAge[0]
+	}
+	return 0
 }

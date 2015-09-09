@@ -20,7 +20,7 @@ func WriteJSON(w http.ResponseWriter, v interface{}, code ...int) error {
 }
 
 func WriteJSONString(w http.ResponseWriter, v string, code int, maxAge ...int) (err error) {
-	head := newHead(ApplicationJSONCharsetUTF8, code, maxAge...)
+	head := NewHead(ApplicationJSONCharsetUTF8, code, maxAge...)
 	head.Write(w)
 	_, err = fmt.Fprintf(w, "%s", v)
 	return err

@@ -21,18 +21,11 @@ func (h Head) Write(w http.ResponseWriter) {
 	w.WriteHeader(h.StatusCode)
 }
 
-func newHead(contentType string, statusCode int, maxAge ...int) Head {
+func NewHead(contentType string, statusCode int, maxAge ...int) Head {
 	max := getMaxAge(maxAge...)
 	return Head{
 		MaxAge:      max,
 		StatusCode:  statusCode,
 		contentType: contentType,
 	}
-}
-
-func getMaxAge(maxAge ...int) int {
-	if len(maxAge) > 0 {
-		return maxAge[0]
-	}
-	return 0
 }
