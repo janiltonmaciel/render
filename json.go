@@ -6,14 +6,14 @@ import (
 	"net/http"
 )
 
-func WriteJSON(w http.ResponseWriter, v interface{}, code ...int) error {
+func WriteJSON(w http.ResponseWriter, v interface{}, code int, maxAge ...int) error {
 	result, err := json.Marshal(v)
 	if err != nil {
 		return err
 	}
 
-	w.Header().Set(ContentType, ApplicationJSONCharsetUTF8)
-	w.WriteHeader(getStatusCode(code...))
+	head := NewHead(ApplicationJSONCharsetUTF8, code, maxAge...)
+	head.Write(w)
 	w.Write(result)
 
 	return nil
