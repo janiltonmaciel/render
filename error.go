@@ -3,7 +3,7 @@ package render
 import (
 	"net/http"
 
-	"gitlab.globoi.com/bastian/falkor/errors"
+	"github.com/janiltonmaciel/errors"
 )
 
 func WriteError(w http.ResponseWriter, err error) error {
